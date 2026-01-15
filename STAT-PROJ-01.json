@@ -1,0 +1,89 @@
+{
+  "id": "STAT-PROJ-01",
+  "title": "Statistical Ensembles and Information Ratios",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-STAT-01", "AXM-MATH-07"],
+  "canonical_slots_used": ["S", "U", "V"],
+  "declared_primitives": ["H", "I", "J"],
+  "domain": {
+    "phase_symbol": "φ_s",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "ensemble[p_ratio[], E_ratio[], T_ratio]",
+      "C_out": "I_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "probability_ratio": "p_ratio := p / p_ref",
+    "entropy_ratio": "S_ratio := -Σ p_ratio * ln(p_ratio / p_ref)",
+    "information_ratio": "I_ratio := S_ref / S_ratio",
+    "free_energy_ratio": "F_ratio := E_ratio - T_ratio * S_ratio",
+    "partition_ratio": "Z_ratio := Σ exp(-E_ratio / (k_B_ratio * T_ratio)) / Z_ref"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "Probabilities and energies must be normalized ratios of declared anchors (k_B, T_ref, E_ref).",
+      "Entropy and information defined solely via ratio of reference entropies (S_ref).",
+      "Partition ratio must remain bounded and positive.",
+      "Ontology of 'ensemble reality' explicitly forbidden; ensemble is relational statistical projection."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["p_ratio[]", "E_ratio[]", "T_ratio"],
+    "steps": [
+      { "set": "Z_ratio", "expr": "Σ exp(-E_ratio / (k_B_ratio * T_ratio)) / Z_ref" },
+      { "set": "S_ratio", "expr": "-Σ p_ratio * ln(p_ratio / p_ref)" },
+      { "set": "I_ratio", "expr": "S_ref / S_ratio" },
+      { "set": "F_ratio", "expr": "E_ratio - T_ratio * S_ratio" },
+      {
+        "if": { "op": ">", "lhs": "abs(Σ p_ratio - 1)", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_normalization", "expr": "true" }]
+      },
+      {
+        "if": { "op": "<=", "lhs": "Z_ratio", "rhs": 0 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "return": ["S_ratio", "I_ratio", "F_ratio", "Z_ratio", "residual_flag_normalization", "boundedness_violation"] }
+    ],
+    "invariances": [
+      "Normalization invariance Σp_ratio=1",
+      "Entropy–information reciprocity S_ratio ↔ 1/I_ratio",
+      "Additivity under independent subsystems"
+    ]
+  },
+  "outputs": {
+    "S_ratio": "number",
+    "I_ratio": "number",
+    "F_ratio": "number",
+    "Z_ratio": "number",
+    "residual_flag_normalization": "boolean",
+    "boundedness_violation": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If partition ratio ≤ 0, projection halts and logs residual anomaly.",
+    "ethical_comment": "Projection must not be used for surveillance scoring or behavioral prediction."
+  }
+}
