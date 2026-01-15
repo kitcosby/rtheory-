@@ -1,0 +1,77 @@
+{
+  "id": "MECH-PROJ-01",
+  "title": "Classical Mechanics as Relational Transformations",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-MECH-01", "AXM-MATH-01"],
+  "canonical_slots_used": ["M", "N", "P"],
+  "declared_primitives": ["A", "B", "C"],
+  "domain": {
+    "phase_symbol": "φ_m",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "state_vector[m, v, t]",
+      "C_out": "E_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "momentum_ratio": "p_ratio := (m*v) / (m_ref*v_ref)",
+    "energy_ratio": "E_ratio := 0.5 * (m/m_ref) * (v/v_ref)^2",
+    "force_ratio": "F_ratio := (Δp/Δt) / (Δp_ref/Δt_ref)"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All quantities expressed as dimensionless ratios using SI-DIMLESS-01 anchors.",
+      "No ontological claim of matter or force existence.",
+      "Temporal evolution declared as reversible mapping, not causal assertion."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["m", "v", "t"],
+    "steps": [
+      { "set": "p_ratio", "expr": "(m*v)/(m_ref*v_ref)" },
+      { "set": "E_ratio", "expr": "0.5*(m/m_ref)*(v/v_ref)^2" },
+      { "set": "F_ratio", "expr": "((p_ratio - p_prev_ratio)/(t - t_prev)) / ((p_ref_ratio - p_ref_prev)/(t_ref - t_ref_prev))" },
+      {
+        "if": { "op": ">", "lhs": "E_ratio", "rhs": 10 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "return": ["E_ratio", "F_ratio"] }
+    ],
+    "invariances": [
+      "Translation invariance in x,t",
+      "Time-reversal symmetry under v→-v",
+      "Energy conservation within numerical tolerance"
+    ]
+  },
+  "outputs": {
+    "E_ratio": "number",
+    "F_ratio": "number"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If true, projection must halt and report residual anomaly.",
+    "ethical_comment": "Projection cannot be used to simulate harm or weapon systems."
+  }
+}
