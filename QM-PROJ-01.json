@@ -1,0 +1,88 @@
+{
+  "id": "QM-PROJ-01",
+  "title": "Quantum Mechanics as Probabilistic Phase Projection",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-QM-01", "AXM-MATH-04"],
+  "canonical_slots_used": ["S", "T", "U"],
+  "declared_primitives": ["E", "F", "G"],
+  "domain": {
+    "phase_symbol": "φ_q",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "state_vector[ψ_ratio, H_ratio, t]",
+      "C_out": "observable_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "wavefunction_ratio": "ψ_ratio := ψ / ψ_ref",
+    "hamiltonian_ratio": "H_ratio := H / H_ref",
+    "probability_ratio": "P_ratio := |ψ_ratio|^2 / |ψ_ref|^2",
+    "expectation_ratio": "⟨O⟩_ratio := (ψ_ratio* O_ratio ψ_ratio) / (ψ_ref* O_ref ψ_ref)",
+    "unitarity_condition": "U_ratio† * U_ratio = I_ratio"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All amplitudes and operators expressed as ratios of declared reference anchors (ħ, e, c).",
+      "Wavefunction is not ontological; it encodes relational phase ratios only.",
+      "Expectation values reported as normalized dimensionless ratios.",
+      "Evolution operator U_ratio must satisfy unitarity constraint within tolerance."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["ψ_ratio", "H_ratio", "t"],
+    "steps": [
+      { "set": "U_ratio", "expr": "exp(-i * H_ratio * t / ħ_ratio)" },
+      { "set": "ψ_next_ratio", "expr": "U_ratio * ψ_ratio" },
+      { "set": "P_ratio", "expr": "|ψ_next_ratio|^2 / |ψ_ref|^2" },
+      {
+        "if": { "op": ">", "lhs": "abs(U_ratio† * U_ratio - I_ratio)", "rhs": 1e-8 },
+        "then": [{ "set": "residual_flag_unitarity", "expr": "true" }]
+      },
+      { "set": "E_expect_ratio", "expr": "(ψ_ratio* H_ratio ψ_ratio) / (ψ_ref* H_ref ψ_ref)" },
+      {
+        "if": { "op": "<", "lhs": "P_ratio", "rhs": 0 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "return": ["ψ_next_ratio", "P_ratio", "E_expect_ratio", "residual_flag_unitarity", "boundedness_violation"] }
+    ],
+    "invariances": [
+      "Global phase invariance (ψ_ratio → e^{iα}ψ_ratio)",
+      "Unitary evolution invariance (U_ratio†U_ratio=I_ratio)",
+      "Probability normalization ΣP_ratio = 1"
+    ]
+  },
+  "outputs": {
+    "ψ_next_ratio": "complex",
+    "P_ratio": "number",
+    "E_expect_ratio": "number",
+    "residual_flag_unitarity": "boolean",
+    "boundedness_violation": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If any probability ratio < 0 or ΣP_ratio ≠ 1 ± tolerance, projection halts.",
+    "ethical_comment": "Projection cannot be used for interpretive realism or claims of metaphysical causation."
+  }
+}
