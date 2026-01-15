@@ -1,0 +1,98 @@
+{
+  "id": "REL-PROJ-01",
+  "title": "Relativity as Ratio-Invariant Kinematics",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-REL-01", "AXM-MATH-05"],
+  "canonical_slots_used": ["T", "U", "V"],
+  "declared_primitives": ["F", "G", "H"],
+  "domain": {
+    "phase_symbol": "φ_r",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "state_vector[v_ratio, x_ratio, t_ratio]",
+      "C_out": "γ_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "velocity_ratio": "v_ratio := v / c_ref",
+    "gamma_ratio": "γ_ratio := 1 / sqrt(1 - v_ratio^2)",
+    "time_dilation_ratio": "Δτ_ratio := 1 / γ_ratio",
+    "length_contraction_ratio": "L_ratio := L_ref * sqrt(1 - v_ratio^2)",
+    "energy_ratio": "E_ratio := γ_ratio * m_ratio",
+    "momentum_ratio": "p_ratio := γ_ratio * v_ratio * m_ratio"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All quantities expressed as ratios relative to the light-speed anchor c_ref.",
+      "No ontological assertion of 'spacetime' as substance; coordinates are relational ratios.",
+      "Velocity ratios bounded strictly by |v_ratio| < 1.",
+      "Lorentz invariance declared explicitly as admissible symmetry."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["v_ratio", "x_ratio", "t_ratio"],
+    "steps": [
+      { "set": "γ_ratio", "expr": "1 / sqrt(1 - v_ratio^2)" },
+      {
+        "if": { "op": ">=", "lhs": "abs(v_ratio)", "rhs": 1 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "set": "Δτ_ratio", "expr": "1 / γ_ratio" },
+      { "set": "L_ratio", "expr": "L_ref * sqrt(1 - v_ratio^2)" },
+      {
+        "set": "E_ratio",
+        "expr": "γ_ratio * m_ratio"
+      },
+      {
+        "set": "p_ratio",
+        "expr": "γ_ratio * v_ratio * m_ratio"
+      },
+      {
+        "if": { "op": ">", "lhs": "abs(E_ratio^2 - (p_ratio^2 + m_ratio^2))", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_energy_momentum", "expr": "true" }]
+      },
+      { "return": ["γ_ratio", "Δτ_ratio", "L_ratio", "E_ratio", "p_ratio", "boundedness_violation", "residual_flag_energy_momentum"] }
+    ],
+    "invariances": [
+      "Lorentz invariance of γ_ratio under coordinate transformation",
+      "Reciprocal symmetry of Δτ_ratio and L_ratio",
+      "Energy–momentum invariance E_ratio^2 - p_ratio^2 = m_ratio^2"
+    ]
+  },
+  "outputs": {
+    "γ_ratio": "number",
+    "Δτ_ratio": "number",
+    "L_ratio": "number",
+    "E_ratio": "number",
+    "p_ratio": "number",
+    "boundedness_violation": "boolean",
+    "residual_flag_energy_momentum": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If |v_ratio| ≥ 1, halt projection and log residual; superluminal states inadmissible.",
+    "ethical_comment": "Projection cannot be employed for speculative time-travel or absolute-frame metaphysics."
+  }
+}
