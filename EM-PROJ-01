@@ -1,0 +1,115 @@
+{
+  "id": "EM-PROJ-01",
+  "title": "Electromagnetic Field Ratios",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-EM-01", "AXM-MATH-02"],
+  "canonical_slots_used": ["P", "Q", "R"],
+  "declared_primitives": ["C", "D", "E"],
+  "domain": {
+    "phase_symbol": "φ_e",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "field_vector[E_ratio, B_ratio, t]",
+      "C_out": "Poynting_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "E_ratio": "E / E_ref",
+    "B_ratio": "B / B_ref",
+    "Poynting_ratio": "(E_ratio × B_ratio) / (E_ref × B_ref)",
+    "wave_ratio": "E_ratio / (c_ratio * B_ratio)",
+    "energy_density_ratio": "0.5 * (ε0_ratio * E_ratio^2 + μ0_ratio * B_ratio^2)"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All fields expressed as dimensionless ratios of declared calibration anchors (c, ε0, μ0, e).",
+      "No ontological field interpretation permitted.",
+      "Wave equations declared as relational constraints, not physical propagation claims."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["E_ratio", "B_ratio", "t"],
+    "steps": [
+      {
+        "set": "curl_E_ratio",
+        "expr": "∇×E_ratio"
+      },
+      {
+        "set": "curl_B_ratio",
+        "expr": "∇×B_ratio"
+      },
+      {
+        "set": "∂B/∂t_ratio",
+        "expr": "∂B_ratio/∂t"
+      },
+      {
+        "set": "∂E/∂t_ratio",
+        "expr": "∂E_ratio/∂t"
+      },
+      {
+        "set": "maxwell_relation_1",
+        "expr": "curl_E_ratio + ∂B/∂t_ratio"
+      },
+      {
+        "set": "maxwell_relation_2",
+        "expr": "curl_B_ratio - (1/c_ratio^2)*∂E/∂t_ratio"
+      },
+      {
+        "if": { "op": ">", "lhs": "abs(maxwell_relation_1)", "rhs": 1e-6 },
+        "then": [
+          { "set": "residual_flag_1", "expr": "true" }
+        ]
+      },
+      {
+        "if": { "op": ">", "lhs": "abs(maxwell_relation_2)", "rhs": 1e-6 },
+        "then": [
+          { "set": "residual_flag_2", "expr": "true" }
+        ]
+      },
+      {
+        "set": "Poynting_ratio",
+        "expr": "(E_ratio × B_ratio) / (E_ref × B_ref)"
+      },
+      {
+        "return": ["Poynting_ratio", "residual_flag_1", "residual_flag_2"]
+      }
+    ],
+    "invariances": [
+      "Lorentz invariance (under v/c < 1)",
+      "Gauge invariance of potentials",
+      "Energy continuity in ratio form"
+    ]
+  },
+  "outputs": {
+    "Poynting_ratio": "number",
+    "residual_flag_1": "boolean",
+    "residual_flag_2": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If abs(maxwell_relation_i) exceeds tolerance, halt projection and log residual.",
+    "ethical_comment": "Projection cannot be used for field weapon modeling or speculative ontology."
+  }
+}
