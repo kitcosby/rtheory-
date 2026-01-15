@@ -1,0 +1,96 @@
+{
+  "id": "GRAV-PROJ-01",
+  "title": "Relational Gravitation as Curvature Ratios",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-GRAV-01", "AXM-MATH-06"],
+  "canonical_slots_used": ["U", "V", "W"],
+  "declared_primitives": ["G", "H", "I"],
+  "domain": {
+    "phase_symbol": "φ_g",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "state_vector[m_ratio, r_ratio, t_ratio]",
+      "C_out": "curvature_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "gravitational_potential_ratio": "Φ_ratio := -G_ratio * m_ratio / r_ratio",
+    "field_strength_ratio": "g_ratio := ∂Φ_ratio / ∂r_ratio",
+    "metric_deviation_ratio": "g_tt_ratio := 1 + 2 * Φ_ratio / c_ratio^2",
+    "curvature_ratio": "R_ratio := ∂Γ_ratio + Γ_ratio * Γ_ratio",
+    "Γ_ratio": "Γ_ratio := ∂g_ratio / ∂r_ratio",
+    "einstein_relation_ratio": "R_ratio - 0.5 * g_ratio * R_scalar_ratio = (8π * G_ratio / c_ratio^4) * T_ratio"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "Curvature and potential must be expressed as ratios to declared calibration anchors (G, c, etc.).",
+      "No ontological assertion of 'spacetime curvature'; curvature exists only as relational deviation ratio.",
+      "Metric components must remain within declared bounded ranges.",
+      "Residuals required if metric determinant deviates beyond tolerance."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["m_ratio", "r_ratio", "t_ratio"],
+    "steps": [
+      { "set": "Φ_ratio", "expr": "-G_ratio * m_ratio / r_ratio" },
+      { "set": "g_ratio", "expr": "∂Φ_ratio / ∂r_ratio" },
+      { "set": "Γ_ratio", "expr": "∂g_ratio / ∂r_ratio" },
+      { "set": "R_ratio", "expr": "∂Γ_ratio + Γ_ratio * Γ_ratio" },
+      { "set": "g_tt_ratio", "expr": "1 + 2 * Φ_ratio / c_ratio^2" },
+      {
+        "if": { "op": ">", "lhs": "abs(g_tt_ratio - 1)", "rhs": 0.1 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      {
+        "set": "R_constraint_ratio",
+        "expr": "R_ratio - 0.5 * g_ratio * R_scalar_ratio - (8π * G_ratio / c_ratio^4) * T_ratio"
+      },
+      {
+        "if": { "op": ">", "lhs": "abs(R_constraint_ratio)", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_field_equation", "expr": "true" }]
+      },
+      { "return": ["Φ_ratio", "g_ratio", "Γ_ratio", "R_ratio", "g_tt_ratio", "boundedness_violation", "residual_flag_field_equation"] }
+    ],
+    "invariances": [
+      "General covariance (coordinate independence of R_ratio)",
+      "Energy–momentum conservation via divergence-free T_ratio",
+      "Reciprocal symmetry under m_ratio ↔ potential_ratio scaling"
+    ]
+  },
+  "outputs": {
+    "Φ_ratio": "number",
+    "g_ratio": "number",
+    "Γ_ratio": "number",
+    "R_ratio": "number",
+    "g_tt_ratio": "number",
+    "boundedness_violation": "boolean",
+    "residual_flag_field_equation": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If |g_tt_ratio - 1| exceeds threshold, projection halts and reports curvature overflow.",
+    "ethical_comment": "Projection cannot be used to assert metaphysical gravitation, cosmological creation, or singularities."
+  }
+}
