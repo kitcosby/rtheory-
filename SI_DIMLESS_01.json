@@ -1,0 +1,1309 @@
+{
+  "id": "SI-DIMLESS-01",
+  "title": "SI Units as Dimensionless Ratios (Report Dialect)",
+  "version": "0.1.0",
+  "principle": "All SI quantities are represented as dimensionless ratios against explicitly declared reference anchors; units are report-only labels.",
+  "si_anchors_2019": {
+    "second": {
+      "definition": "1 s is the duration of 9_192_631_770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of Cs-133",
+      "reference": "Cs-133 hyperfine"
+    },
+    "meter": {
+      "definition": "1 m is the length of the path travelled by light in vacuum in 1/299_792_458 of a second",
+      "reference": "c and second"
+    },
+    "kilogram": {
+      "definition": "1 kg is defined by fixing the numerical value of the Planck constant h",
+      "reference": "h"
+    },
+    "ampere": {
+      "definition": "1 A is defined by fixing the numerical value of the elementary charge e",
+      "reference": "e"
+    },
+    "kelvin": {
+      "definition": "1 K is defined by fixing the numerical value of the Boltzmann constant k_B",
+      "reference": "k_B"
+    },
+    "mole": {
+      "definition": "1 mol is defined by fixing the numerical value of the Avogadro constant N_A",
+      "reference": "N_A"
+    },
+    "candela": {
+      "definition": "1 cd is defined by fixing the numerical value of the luminous efficacy K_cd of monochromatic radiation of frequency 540×10^12 Hz",
+      "reference": "K_cd"
+    }
+  },
+  "dimensionless_representation": {
+    "quantity_object_shape": {
+      "value": {
+        "mantissa": "number",
+        "exponent": "integer",
+        "base10": true
+      },
+      "unit_vector": "{m: int, kg: int, s: int, A: int, K: int, mol: int, cd: int}",
+      "reference_anchor_id": "string",
+      "dimensionless_ratio": "number",
+      "notes": "string|null"
+    },
+    "ratio_rule": "dimensionless_ratio := Q / Q_ref where Q_ref has the same unit_vector and is explicitly declared"
+  },
+  "imported_tables": {
+    "source_file": "Chem.gsheet (PDF export)",
+    "table_id": "chem_table_01",
+    "fields": [
+      "symbol",
+      "raw (mantissa*2^exponent)",
+      "sci10"
+    ],
+    "rows": [
+      {
+        "symbol": "H",
+        "raw": {
+          "mantissa": 0.586,
+          "base": 2,
+          "exponent": 87
+        },
+        "sci10": {
+          "mantissa": 9.06791078776541,
+          "exponent": 25
+        }
+      },
+      {
+        "symbol": "He",
+        "raw": {
+          "mantissa": 0.582,
+          "base": 2,
+          "exponent": 89
+        },
+        "sci10": {
+          "mantissa": 3.6024055143204565,
+          "exponent": 26
+        }
+      },
+      {
+        "symbol": "Li",
+        "raw": {
+          "mantissa": 1.009,
+          "base": 2,
+          "exponent": 89
+        },
+        "sci10": {
+          "mantissa": 6.245407498194743,
+          "exponent": 26
+        }
+      },
+      {
+        "symbol": "Be",
+        "raw": {
+          "mantissa": 0.655,
+          "base": 2,
+          "exponent": 90
+        },
+        "sci10": {
+          "mantissa": 8.108507257319241,
+          "exponent": 26
+        }
+      },
+      {
+        "symbol": "B",
+        "raw": {
+          "mantissa": 0.786,
+          "base": 2,
+          "exponent": 90
+        },
+        "sci10": {
+          "mantissa": 9.730208708783088,
+          "exponent": 26
+        }
+      },
+      {
+        "symbol": "C",
+        "raw": {
+          "mantissa": 0.873,
+          "base": 2,
+          "exponent": 90
+        },
+        "sci10": {
+          "mantissa": 1.080721654296137,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "N",
+        "raw": {
+          "mantissa": 1.018,
+          "base": 2,
+          "exponent": 90
+        },
+        "sci10": {
+          "mantissa": 1.2602229599925172,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "O",
+        "raw": {
+          "mantissa": 0.581,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 1.4384863256496119,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "F",
+        "raw": {
+          "mantissa": 0.69,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 1.7083572542138248,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ne",
+        "raw": {
+          "mantissa": 0.733,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 1.8148200975923674,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Na",
+        "raw": {
+          "mantissa": 0.836,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 2.0698357456851557,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Mg",
+        "raw": {
+          "mantissa": 0.883,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 2.1862021093779815,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Al",
+        "raw": {
+          "mantissa": 0.981,
+          "base": 2,
+          "exponent": 91
+        },
+        "sci10": {
+          "mantissa": 2.428838357077916,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Si",
+        "raw": {
+          "mantissa": 0.51,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 2.525397680142176,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "P",
+        "raw": {
+          "mantissa": 0.562,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 2.782889208313535,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "S",
+        "raw": {
+          "mantissa": 0.583,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 2.886876171613507,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Cl",
+        "raw": {
+          "mantissa": 0.644,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 3.1889335411991397,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ar",
+        "raw": {
+          "mantissa": 0.726,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 3.5949778740847442,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "K",
+        "raw": {
+          "mantissa": 0.711,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 3.5207014717276217,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ca",
+        "raw": {
+          "mantissa": 0.723,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 3.5801225936133196,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Sc",
+        "raw": {
+          "mantissa": 0.817,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 4.045588048384623,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ti",
+        "raw": {
+          "mantissa": 0.87,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 4.308031336713124,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "V",
+        "raw": {
+          "mantissa": 0.926,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 4.585329905513048,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Cr",
+        "raw": {
+          "mantissa": 0.949,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 4.699220389127303,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Mn",
+        "raw": {
+          "mantissa": 0.998,
+          "base": 2,
+          "exponent": 92
+        },
+        "sci10": {
+          "mantissa": 4.941856636827238,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Fe",
+        "raw": {
+          "mantissa": 0.507,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 5.021084799341502,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Co",
+        "raw": {
+          "mantissa": 0.535,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 5.298383368141428,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ni",
+        "raw": {
+          "mantissa": 0.533,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 5.278576327512861,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Cu",
+        "raw": {
+          "mantissa": 0.577,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 5.7143312213413155,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Zn",
+        "raw": {
+          "mantissa": 0.594,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 5.882691066684127,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ga",
+        "raw": {
+          "mantissa": 0.634,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 6.278831879255449,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ge",
+        "raw": {
+          "mantissa": 0.66,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 6.536323407426808,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "As",
+        "raw": {
+          "mantissa": 0.681,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 6.744297334026752,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Se",
+        "raw": {
+          "mantissa": 0.718,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 7.110727585655225,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Br",
+        "raw": {
+          "mantissa": 0.726,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 7.1899557481694885,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Kr",
+        "raw": {
+          "mantissa": 0.761,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 7.536578959169395,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Rb",
+        "raw": {
+          "mantissa": 0.777,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 7.695035284197924,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Sr",
+        "raw": {
+          "mantissa": 0.796,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 7.883202170169302,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Y",
+        "raw": {
+          "mantissa": 0.808,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 8.002044413940698,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Zr",
+        "raw": {
+          "mantissa": 0.829,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 8.210018340540643,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Nb",
+        "raw": {
+          "mantissa": 0.844,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 8.358571145254887,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Mo",
+        "raw": {
+          "mantissa": 0.872,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 8.635869714054813,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Tc",
+        "raw": {
+          "mantissa": 0.899,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 8.903264762540456,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ru",
+        "raw": {
+          "mantissa": 0.918,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 9.091431648511833,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Rh",
+        "raw": {
+          "mantissa": 0.936,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 9.269695014168928,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Pd",
+        "raw": {
+          "mantissa": 0.967,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 9.576704143911702,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Ag",
+        "raw": {
+          "mantissa": 0.98,
+          "base": 2,
+          "exponent": 93
+        },
+        "sci10": {
+          "mantissa": 9.705449907997382,
+          "exponent": 27
+        }
+      },
+      {
+        "symbol": "Cd",
+        "raw": {
+          "mantissa": 0.511,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.0121397761197268,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "In",
+        "raw": {
+          "mantissa": 0.522,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.0339275208111496,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Sn",
+        "raw": {
+          "mantissa": 0.539,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.0675994898797119,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Sb",
+        "raw": {
+          "mantissa": 0.553,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.0953293467597045,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Te",
+        "raw": {
+          "mantissa": 0.58,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.148808356456833,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "I",
+        "raw": {
+          "mantissa": 0.577,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.142866244268263,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Xe",
+        "raw": {
+          "mantissa": 0.596,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.1804996214625387,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Cs",
+        "raw": {
+          "mantissa": 0.604,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.1963452539653916,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ba",
+        "raw": {
+          "mantissa": 0.624,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.2359593352225238,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "La",
+        "raw": {
+          "mantissa": 0.631,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.2498242636625199,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ce",
+        "raw": {
+          "mantissa": 0.637,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.2617084880396596,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pr",
+        "raw": {
+          "mantissa": 0.64,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.2676506002282295,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Nd",
+        "raw": {
+          "mantissa": 0.655,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.2973611611710785,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pm",
+        "raw": {
+          "mantissa": 0.658,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.3033032733596484,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Sm",
+        "raw": {
+          "mantissa": 0.683,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.3528208749310635,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Eu",
+        "raw": {
+          "mantissa": 0.69,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.3666858033710598,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Gd",
+        "raw": {
+          "mantissa": 0.714,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.4142227008796184,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Tb",
+        "raw": {
+          "mantissa": 0.722,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.4300683333824713,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Dy",
+        "raw": {
+          "mantissa": 0.738,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.461759598388177,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Hf",
+        "raw": {
+          "mantissa": 0.749,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.4835473430795998,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Er",
+        "raw": {
+          "mantissa": 0.76,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.5053350877710223,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Tm",
+        "raw": {
+          "mantissa": 0.767,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.5192000162110186,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Yb",
+        "raw": {
+          "mantissa": 0.786,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.5568333934052943,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Lu",
+        "raw": {
+          "mantissa": 0.795,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.5746597299710037,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Hf",
+        "raw": {
+          "mantissa": 0.811,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.6063509949767094,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ta",
+        "raw": {
+          "mantissa": 0.822,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.6281387396681322,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "W",
+        "raw": {
+          "mantissa": 0.835,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.653887892485268,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Re",
+        "raw": {
+          "mantissa": 0.846,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.6756756371766908,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Os",
+        "raw": {
+          "mantissa": 0.864,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.7113283103081096,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ir",
+        "raw": {
+          "mantissa": 0.873,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.7291546468738193,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pt",
+        "raw": {
+          "mantissa": 0.886,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.7549037996909551,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Au",
+        "raw": {
+          "mantissa": 0.895,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.7727301362566645,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Hg",
+        "raw": {
+          "mantissa": 0.911,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8044214012623703,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Tl",
+        "raw": {
+          "mantissa": 0.929,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8400740743937893,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pb",
+        "raw": {
+          "mantissa": 0.941,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8638425231480686,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Bi",
+        "raw": {
+          "mantissa": 0.949,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8796881556509215,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Po",
+        "raw": {
+          "mantissa": 0.949,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8796881556509215,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "At",
+        "raw": {
+          "mantissa": 0.954,
+          "base": 2,
+          "exponent": 94
+        },
+        "sci10": {
+          "mantissa": 1.8895916759652045,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Rn",
+        "raw": {
+          "mantissa": 0.504,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 1.9965496953594613,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Fr",
+        "raw": {
+          "mantissa": 0.507,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.008433919736601,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ra",
+        "raw": {
+          "mantissa": 0.513,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.0322023684908803,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Ac",
+        "raw": {
+          "mantissa": 0.516,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.04408659286802,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Th",
+        "raw": {
+          "mantissa": 0.527,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.087662082250865,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pa",
+        "raw": {
+          "mantissa": 0.525,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.079739265999439,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "U",
+        "raw": {
+          "mantissa": 0.541,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.1431217960108504,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Np",
+        "raw": {
+          "mantissa": 0.538,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.1312375716337106,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Pu",
+        "raw": {
+          "mantissa": 0.554,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.194620101645122,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Cm",
+        "raw": {
+          "mantissa": 0.561,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.2223499585251147,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Bk",
+        "raw": {
+          "mantissa": 0.561,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.2223499585251147,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Cf",
+        "raw": {
+          "mantissa": 0.57,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.2580026316565336,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Es",
+        "raw": {
+          "mantissa": 0.577,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.285732488536526,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Fm",
+        "raw": {
+          "mantissa": 0.583,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.3095009372908053,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Md",
+        "raw": {
+          "mantissa": 0.568,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.2500798154051074,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "No",
+        "raw": {
+          "mantissa": 0.589,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.333269386045085,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Lr",
+        "raw": {
+          "mantissa": 0.595,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.357037834799364,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "Sg",
+        "raw": {
+          "mantissa": 0.604,
+          "base": 2,
+          "exponent": 95
+        },
+        "sci10": {
+          "mantissa": 2.392690507930783,
+          "exponent": 28
+        }
+      },
+      {
+        "symbol": "A",
+        "raw": {
+          "mantissa": 0.899,
+          "base": 2,
+          "exponent": -57
+        },
+        "sci10": {
+          "mantissa": 6.238065619612598,
+          "exponent": -18
+        }
+      }
+    ]
+  }
+}
