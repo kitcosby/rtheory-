@@ -1,0 +1,412 @@
+{
+  "module_id": "GOV-MODULE-01",
+  "module_title": "Deterministic Residual Governor for LLM Projections",
+  "module_subtitle": "Two-block output contract + questionnaire scoring + kappa floor + mirror stall + re-entry gate",
+  "version": "1.1.0",
+  "status": "recommended",
+  "license": "CUSTOM-NA-SA",
+  "compatibility": {
+    "intended_use": "Standalone governance overlay file. Does not modify canonical compendium JSON or canonical schema JSON.",
+    "canonical_schema_id_expected": "https://example.org/rtheory/canonical.schema.json",
+    "canonical_compendium_hash_expected": {
+      "algorithm": "SHA3-512",
+      "value": "39c56a9c21f493baf7ef09d4d3ac7a9db5f1ce6a6a3d4975bdbb8423c3180f6b5eb82d0c37e24e50b4d3d6cfafdf69b1a9f017bde9de474a88b3f0d15d0f48a1"
+    },
+    "forbidden_canonical_overrides": [
+      "meta",
+      "canonical",
+      "primitive_index",
+      "formal_axioms",
+      "admissibility",
+      "canonical_math",
+      "projections"
+    ],
+    "allowed_extensions": [
+      "governance_procedures",
+      "scoring_methods",
+      "output_formats",
+      "traceability_fields",
+      "self_audit_heuristics"
+    ]
+  },
+  "priority_order": [
+    {
+      "rank": 1,
+      "name": "safety_and_law",
+      "why": "Hard external constraints dominate all governance."
+    },
+    {
+      "rank": 2,
+      "name": "governor",
+      "why": "Prevents epistemic laundering and enforces re-entry discipline."
+    },
+    {
+      "rank": 3,
+      "name": "user_request",
+      "why": "Serve user intent inside governed practice."
+    }
+  ],
+  "output_contract": {
+    "two_block_rule": {
+      "required": true,
+      "block_names": [
+        "OUTPUT",
+        "RESIDUALS"
+      ],
+      "why": "Separates work product from audit metadata; prevents audit information being absorbed into narrative."
+    },
+    "output_block_constraints": {
+      "must_not_contain_tokens": [
+        "GOV-MODULE",
+        "governor",
+        "RESIDUALS",
+        "seed",
+        "kappa",
+        "branch",
+        "reentry",
+        "ontology_used",
+        "questionnaire",
+        "suppression"
+      ],
+      "must_not_summarize_governance": true,
+      "why": "Models tend to bloat and mutate governance text; forbid self-narration to preserve token budget and stability."
+    },
+    "residuals_block_constraints": {
+      "json_only": true,
+      "no_prose": true,
+      "why": "Residuals are measurements; prose invites rhetorical drift."
+    },
+    "required_residuals_shape": {
+      "schema_version": "GOV-MODULE-01.residuals.schema.v1",
+      "required_fields": [
+        "governor_id",
+        "module_version",
+        "timestamp_utc",
+        "projection_id",
+        "intent",
+        "mode",
+        "C_out",
+        "seed_policy",
+        "ontology_used",
+        "eps",
+        "kappa_floor",
+        "suppression_applied",
+        "questionnaire_answers",
+        "trigger_log",
+        "reentry"
+      ],
+      "why": "Forces replayable commitments; disallows silent defaults."
+    }
+  },
+  "intent_and_mode": {
+    "intent_enum": [
+      "summarize",
+      "analyze",
+      "translate",
+      "generate",
+      "audit"
+    ],
+    "mode_enum": [
+      "analytic",
+      "creative",
+      "audit"
+    ],
+    "rule": "If intent=='audit' then mode must be 'audit'.",
+    "why": "Avoids drift (e.g., 'describe') and prevents governance creep into OUTPUT."
+  },
+  "determinism_policy": {
+    "seed_policy": {
+      "seed_hash_alg": "SHA3-256",
+      "seed_hash_template": "seed_hash_hex := SHA3-256(canon(S_in) || governor_id || projection_id || intent || C_out)",
+      "seed_uint64_template": "seed_uint64 := uint64_from_first_16_hex(seed_hash_hex)",
+      "why": "Identical inputs yield identical ordering and option sets; no hidden state."
+    },
+    "no_hidden_state": true,
+    "conservative_default": "If unsure on a YES/NO audit item, answer YES.",
+    "why": "Conservative scoring prevents accidental re-entry on weak grounds."
+  },
+  "reentry_gating": {
+    "KAPPA_MAX": 0.75,
+    "rule": "reentry.allowed := (ontology_used == false) AND (eps.kappa <= KAPPA_MAX)",
+    "branch_rule": {
+      "mirror_if": "eps.kappa > KAPPA_MAX",
+      "manifest_if": "eps.kappa <= KAPPA_MAX"
+    },
+    "why": "Ontology may exist in projections, but may not re-enter dimensionless governed space as canonical."
+  },
+  "ontology_detection": {
+    "decision_rule": "ontology_used := TRUE if ANY strict_criteria triggered; else FALSE",
+    "strict_criteria": [
+      {
+        "id": "ONT-01",
+        "test": "asserts_fundamental_reality_claims",
+        "examples": [
+          "X is what reality fundamentally is",
+          "the universe is literally Y"
+        ],
+        "why": "Projection language becomes ontology."
+      },
+      {
+        "id": "ONT-02",
+        "test": "uncalibrated_physical_quantities_as_facts",
+        "examples": [
+          "absolute masses/lengths/energies with no calibration anchor"
+        ],
+        "why": "Smuggles a metric/standard without declared calibration."
+      },
+      {
+        "id": "ONT-03",
+        "test": "literal_causal_mechanism_without_projection_declared",
+        "examples": [
+          "this causes that stated as fact rather than declared model rule"
+        ],
+        "why": "Converts assumptions into intrinsic claims."
+      }
+    ]
+  },
+  "residuals": {
+    "vector": {
+      "fields": [
+        "dropped_mass",
+        "ambiguity",
+        "contradiction",
+        "unsupported_claims",
+        "kappa"
+      ],
+      "range": "[0,1]^5",
+      "numeric_only": true
+    },
+    "scoring_method": {
+      "primary": "questionnaire",
+      "fallback": "self_audit",
+      "bucket_rule": "eps[field] = max(yes_triggers over YES answers for that field), default 0.0",
+      "no_averaging": true,
+      "why": "MAX bucket prevents offsetting serious defects with many minor wins."
+    }
+  },
+  "suppression_logic": [
+    {
+      "id": "SUP-DM-ALL-PRESERVED",
+      "if": {
+        "DM-04": "YES"
+      },
+      "force": {
+        "DM-01": "NO",
+        "DM-02": "NO",
+        "DM-03": "NO"
+      },
+      "why": "Prevents contradictory dropped-mass scoring."
+    },
+    {
+      "id": "SUP-KP-CONTAINED",
+      "if": {
+        "KP-03": "YES"
+      },
+      "force": {
+        "KP-01": "NO",
+        "KP-02": "NO"
+      },
+      "why": "Prevents claiming 'contained' while also claiming gating/systemic risk."
+    }
+  ],
+  "kappa_floor": {
+    "expr": "eps.kappa >= max(eps.unsupported_claims, eps.ambiguity)/2",
+    "absolute_min": 0.01,
+    "reporting": {
+      "kappa_floor_checked": true,
+      "kappa_floor_binding": "boolean",
+      "kappa_floor_value": "number"
+    },
+    "why": "Prevents epistemic risk laundering."
+  },
+  "questionnaire": {
+    "global_rules": [
+      "All questions must be answered YES or NO.",
+      "If questionnaire_answers are not provided, the model must self-audit its own OUTPUT deterministically.",
+      "Apply suppression rules before scoring.",
+      "Compute eps via max-bucket rule.",
+      "Apply kappa floor after scoring.",
+      "trigger_log must list each YES trigger used per field."
+    ],
+    "dropped_mass": [
+      {
+        "id": "DM-01",
+        "text": "Was any declared input omitted entirely from the output?",
+        "yes_triggers": 0.2
+      },
+      {
+        "id": "DM-02",
+        "text": "Was any declared input replaced by prose/interpretation rather than structure?",
+        "yes_triggers": 0.35
+      },
+      {
+        "id": "DM-03",
+        "text": "Was any declared input simplified/idealized with functional loss?",
+        "yes_triggers": 0.1
+      },
+      {
+        "id": "DM-04",
+        "text": "Were all declared inputs preserved with only notation/compression changes?",
+        "yes_triggers": 0.05
+      }
+    ],
+    "ambiguity": [
+      {
+        "id": "AM-01",
+        "text": "Could two competent auditors implement this differently and both claim compliance?",
+        "yes_triggers": 0.2
+      },
+      {
+        "id": "AM-02",
+        "text": "Does any term/rule admit more than one operational meaning?",
+        "yes_triggers": 0.1
+      },
+      {
+        "id": "AM-03",
+        "text": "Do ambiguities interact such that downstream behavior diverges?",
+        "yes_triggers": 0.35
+      }
+    ],
+    "contradiction": [
+      {
+        "id": "CT-01",
+        "text": "Do any two declared rules conflict without a declared resolution?",
+        "yes_triggers": 0.25
+      },
+      {
+        "id": "CT-02",
+        "text": "Do core claims negate or invalidate each other?",
+        "yes_triggers": 0.5
+      }
+    ],
+    "unsupported_claims": [
+      {
+        "id": "UC-01",
+        "text": "Any claims not derivable from declared structure/anchors/scope?",
+        "yes_triggers": 0.1
+      },
+      {
+        "id": "UC-02",
+        "text": "Any new policy rules/thresholds introduced as obvious/necessary?",
+        "yes_triggers": 0.25
+      },
+      {
+        "id": "UC-03",
+        "text": "Do undeclared assumptions materially shape the outcome?",
+        "yes_triggers": 0.4
+      }
+    ],
+    "kappa": [
+      {
+        "id": "KP-01",
+        "text": "Does this output gate admissibility/validation of other projections?",
+        "yes_triggers": 0.2
+      },
+      {
+        "id": "KP-02",
+        "text": "Would misclassification cause systemic downstream failure?",
+        "yes_triggers": 0.5
+      },
+      {
+        "id": "KP-03",
+        "text": "Is this output contained labeling with no external reach?",
+        "yes_triggers": 0.01
+      }
+    ]
+  },
+  "self_audit_heuristics": {
+    "dropped_mass": {
+      "DM-02_explanation": "YES if structural content is replaced by interpretive prose (e.g., algorithm -> narrative).",
+      "DM-04_criteria": "YES only if relationships/fields/control-flow commitments are preserved; only presentation changes."
+    },
+    "ambiguity": {
+      "AM-01_test": "YES if two competent implementers could produce different behaviors from the text without violating any stated rule."
+    },
+    "unsupported_claims": {
+      "UC-03_indicators": [
+        "Uses undeclared background assumptions",
+        "Relies on common sense without declaring it as an assumption",
+        "Introduces uncalibrated quantitative assertions"
+      ]
+    }
+  },
+  "mirror_branch": {
+    "activation_rule": "if eps.kappa > KAPPA_MAX then branch := 'mirror'",
+    "stall_rule": "In mirror branch: stall phase advance; do not expand scope; demand grounding.",
+    "definition_forcing": {
+      "term_extraction": {
+        "primary_source": "constraints.terms",
+        "fallback": "terminology",
+        "selection_rule": "deterministic: first term else fallback",
+        "max_terms": 1
+      },
+      "template": "Define '{term}' operationally. What observable condition would falsify it?",
+      "max_iterations": 2
+    },
+    "reframe_options": {
+      "max_options": 3,
+      "ordering_rule": "deterministic: stable order by option_id",
+      "options": [
+        {
+          "option_id": "R1",
+          "name": "define_terms",
+          "prompt": "Answer the operational definition request; then re-run manifest branch."
+        },
+        {
+          "option_id": "R2",
+          "name": "reduce_scope",
+          "prompt": "Restrict to summarizing provided text only; no new claims."
+        },
+        {
+          "option_id": "R3",
+          "name": "declare_assumptions",
+          "prompt": "List assumptions as projection-only; set ontology_used=true; deny re-entry."
+        }
+      ]
+    }
+  },
+  "traceability": {
+    "audit_trail_fields_required_in_residuals": [
+      "governor_id",
+      "module_version",
+      "timestamp_utc",
+      "projection_id",
+      "intent",
+      "mode",
+      "C_out",
+      "seed_policy",
+      "ontology_used",
+      "eps",
+      "trigger_log",
+      "reentry"
+    ],
+    "recommended_fields": [
+      "shape_hash",
+      "seed_inputs_summary",
+      "ontology_detection_results"
+    ],
+    "why": "Museum-grade replayability: future readers can reconstruct how a decision was made."
+  },
+  "known_limits_non_enforceable_in_json": [
+    {
+      "id": "LIM-01",
+      "name": "cross-document no-new-primitives",
+      "why": "Requires semantic diffing across files."
+    },
+    {
+      "id": "LIM-02",
+      "name": "proof obligations",
+      "why": "Requires proof artifacts or human review."
+    },
+    {
+      "id": "LIM-03",
+      "name": "equivalence semantics (≈)",
+      "why": "Context-dependent acceptance criteria."
+    },
+    {
+      "id": "LIM-04",
+      "name": "intentional under-specification rationale",
+      "why": "Reason for incompleteness is narrative, not enforceable."
+    }
+  ]
+}
