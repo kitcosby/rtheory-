@@ -1,0 +1,94 @@
+{
+  "id": "FND-PROJ-01",
+  "title": "Foundations Projection — Dimensional Reduction and Cross-Linking",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-FND-01", "AXM-MATH-08"],
+  "canonical_slots_used": ["U", "V", "W", "X"],
+  "declared_primitives": ["H", "I", "J", "K"],
+  "domain": {
+    "phase_symbol": "φ_f",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "cluster_state[φ_m, φ_e, φ_T, φ_q, φ_r, φ_g, φ_s]",
+      "C_out": "crosslink_matrix"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "composite",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "crosslink_matrix": "C[i,j] := ∂φ_i / ∂φ_j for all (i,j) in {m,e,T,q,r,g,s}",
+    "symmetry_condition": "C[i,j] = -C[j,i] for conserved domains",
+    "global_invariant_ratio": "Λ_ratio := Σ_i Σ_j (φ_i * φ_j * C[i,j]) / Σ_i φ_i^2",
+    "scaling_anchor_consistency": "anchor_ratio_set := {ħ_ratio, c_ratio, k_B_ratio, G_ratio, e_ratio}",
+    "dimensional_reduction_rule": "project {φ_i} onto basis minimizing Λ_ratio gradient",
+    "closure_condition": "Σ_i residuals(φ_i) ≤ κ_threshold"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All phase symbols from component projections must map into shared dimensionless manifold.",
+      "No crosslink introduces new primitives or ontological interpretations.",
+      "Crosslink matrix C must remain antisymmetric for conserved relationships.",
+      "Dimensional reduction rule must yield bounded Λ_ratio gradient (<1e-6)."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["φ_m", "φ_e", "φ_T", "φ_q", "φ_r", "φ_g", "φ_s"],
+    "steps": [
+      { "set": "crosslink_matrix", "expr": "∂φ_i / ∂φ_j for all pairs (i,j)" },
+      { "set": "Λ_ratio", "expr": "Σ_i Σ_j (φ_i * φ_j * crosslink_matrix[i][j]) / Σ_i φ_i^2" },
+      {
+        "if": { "op": ">", "lhs": "abs(Λ_ratio)", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_crosslink_drift", "expr": "true" }]
+      },
+      { "set": "anchor_ratio_set", "expr": "{ħ_ratio, c_ratio, k_B_ratio, G_ratio, e_ratio}" },
+      {
+        "if": { "op": ">", "lhs": "var(anchor_ratio_set)", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_anchor_mismatch", "expr": "true" }]
+      },
+      { "set": "dimensional_reduction", "expr": "P = argmin(Λ_ratio gradient)" },
+      {
+        "if": { "op": ">", "lhs": "Σ residuals(φ_i)", "rhs": 0.75 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "return": ["crosslink_matrix", "Λ_ratio", "dimensional_reduction", "residual_flag_crosslink_drift", "residual_flag_anchor_mismatch", "boundedness_violation"] }
+    ],
+    "invariances": [
+      "Global conservation under antisymmetric crosslinks",
+      "Invariance of Λ_ratio under domain relabeling",
+      "Anchor stability across physical branches"
+    ]
+  },
+  "outputs": {
+    "crosslink_matrix": "matrix[number]",
+    "Λ_ratio": "number",
+    "dimensional_reduction": "vector[number]",
+    "residual_flag_crosslink_drift": "boolean",
+    "residual_flag_anchor_mismatch": "boolean",
+    "boundedness_violation": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If total residual load exceeds threshold, cluster projection halts to prevent epistemic inflation.",
+    "ethical_comment": "Projection may not be used to assert universal closure or metaphysical unity; it is strictly formal cross-linking."
+  }
+}
