@@ -1,0 +1,812 @@
+{
+  "$id": "https://example.org/rtheory/canonical.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "R-Theory Canonical Compendium Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "canonical",
+    "primitive_index",
+    "lineage",
+    "governance",
+    "canonical_math",
+    "machine_interface",
+    "status",
+    "sorts",
+    "primitive_symbols",
+    "formal_axioms",
+    "admissibility",
+    "catalog_unmodeled_requirements",
+    "notes",
+    "projections"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "subtitle",
+        "edition",
+        "author",
+        "compiled_by",
+        "language",
+        "license",
+        "date_compiled",
+        "canonical_hash",
+        "build_environment"
+      ],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "subtitle": { "type": "string", "minLength": 1 },
+        "edition": { "type": "string", "minLength": 1 },
+        "author": { "type": "string", "minLength": 1 },
+        "compiled_by": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "date_compiled": { "type": "string", "format": "date-time" },
+        "canonical_hash": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": { "type": "string", "enum": ["SHA3-512"] },
+            "value": { "type": "string", "pattern": "^[0-9a-fA-F]{128}$" }
+          }
+        },
+        "build_environment": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "canonical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slots"],
+      "properties": {
+        "slots": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "structural_layer",
+            "relational_layer",
+            "projection_layer",
+            "calibration_layer",
+            "governance_appendices"
+          ],
+          "properties": {
+            "structural_layer": { "$ref": "#/$defs/slotList" },
+            "relational_layer": { "$ref": "#/$defs/slotList" },
+            "projection_layer": { "$ref": "#/$defs/slotList" },
+            "calibration_layer": { "$ref": "#/$defs/slotList" },
+            "governance_appendices": { "$ref": "#/$defs/slotList" }
+          }
+        }
+      }
+    },
+
+    "primitive_index": {
+      "type": "object",
+      "additionalProperties": false,
+      "propertyNames": { "$ref": "#/$defs/slotKey" },
+      "patternProperties": {
+        "^[A-W]$": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "lineage": { "type": "string", "minLength": 1 },
+
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admissibility_ruleset",
+        "closure_ceiling",
+        "projection_freedom",
+        "ontology_allowed",
+        "residual_reporting_required",
+        "calibration_anchors",
+        "ethical_guidelines"
+      ],
+      "properties": {
+        "admissibility_ruleset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "elements"],
+          "properties": {
+            "name": { "type": "string", "enum": ["fivefold_predicate"] },
+            "elements": {
+              "type": "array",
+              "minItems": 5,
+              "maxItems": 5,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "boundedness",
+                  "no_new_primitives",
+                  "mirror_accessibility",
+                  "residual_reporting",
+                  "projection_declaration"
+                ]
+              }
+            }
+          }
+        },
+        "closure_ceiling": { "type": "string", "enum": ["L3"] },
+        "projection_freedom": { "type": "boolean" },
+        "ontology_allowed": { "type": "boolean", "const": false },
+        "residual_reporting_required": { "type": "boolean" },
+        "calibration_anchors": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "ethical_guidelines": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "canonical_math": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "operators", "composites", "identities", "phase_wheel", "samples"],
+      "properties": {
+        "angle_convention": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["preferred_unit", "interchangeability_disclaimer"],
+          "properties": {
+            "preferred_unit": { "type": "string", "enum": ["degrees", "radians"] },
+            "interchangeability_disclaimer": { "type": "string", "minLength": 1 }
+          }
+        },
+
+        "domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["x_symbol", "x_units", "x_range", "singular_sets"],
+          "properties": {
+            "x_symbol": { "type": "string", "minLength": 1 },
+            "x_units": { "type": "string", "enum": ["degrees", "radians"] },
+            "x_range": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["type", "start", "end"],
+              "properties": {
+                "type": { "type": "string", "enum": ["half_open_interval"] },
+                "start": { "type": ["number", "string"] },
+                "end": { "type": ["number", "string"] }
+              }
+            },
+            "singular_sets": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+
+        "operators": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["srx", "sxp", "cxp", "crx"],
+          "properties": {
+            "srx": { "$ref": "#/$defs/namedExpr" },
+            "sxp": { "$ref": "#/$defs/namedExpr" },
+            "cxp": { "$ref": "#/$defs/namedExpr" },
+            "crx": { "$ref": "#/$defs/namedExpr" }
+          }
+        },
+
+        "composites": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["urx", "uxp", "sawdown", "sawup", "flatwave"],
+          "properties": {
+            "urx": { "$ref": "#/$defs/namedExpr" },
+            "uxp": { "$ref": "#/$defs/namedExpr" },
+            "sawdown": { "$ref": "#/$defs/namedExpr" },
+            "sawup": { "$ref": "#/$defs/namedExpr" },
+            "flatwave": { "$ref": "#/$defs/namedExpr" }
+          }
+        },
+
+        "identities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "lhs", "rhs", "notes"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "lhs": { "$ref": "#/$defs/namedExpr" },
+              "rhs": { "$ref": "#/$defs/namedExpr" },
+              "notes": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+
+        "phase_wheel": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "octants"],
+          "properties": {
+            "encoding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "decay_symbol",
+                "growth_symbol",
+                "manifest_symbol",
+                "mirror_symbol",
+                "phase_symbol",
+                "cophase_symbol"
+              ],
+              "properties": {
+                "decay_symbol": { "type": "string", "minLength": 1 },
+                "growth_symbol": { "type": "string", "minLength": 1 },
+                "manifest_symbol": { "type": "string", "minLength": 1 },
+                "mirror_symbol": { "type": "string", "minLength": 1 },
+                "phase_symbol": { "type": "string", "minLength": 1 },
+                "cophase_symbol": { "type": "string", "minLength": 1 }
+              }
+            },
+            "octants": {
+              "type": "array",
+              "minItems": 8,
+              "maxItems": 8,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "deg_start",
+                  "deg_end",
+                  "dominant",
+                  "recessive",
+                  "phase_sign",
+                  "description",
+                  "code"
+                ],
+                "properties": {
+                  "deg_start": { "type": "number" },
+                  "deg_end": { "type": "number" },
+                  "dominant": { "type": "string", "enum": ["srx", "cxp", "crx", "sxp"] },
+                  "recessive": { "type": "string", "enum": ["srx", "cxp", "crx", "sxp"] },
+                  "phase_sign": { "type": "string", "enum": ["+", "-"] },
+                  "description": { "type": "string", "minLength": 1 },
+                  "code": { "type": "string", "pattern": "^[OI]{3}$" }
+                }
+              }
+            }
+          }
+        },
+
+        "samples": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "deg",
+              "srx",
+              "sxp",
+              "cxp",
+              "crx",
+              "uxp",
+              "urx",
+              "sawdown",
+              "sawup",
+              "flatwave"
+            ],
+            "properties": {
+              "deg": { "type": "number" },
+              "srx": { "type": ["number", "null"] },
+              "sxp": { "type": ["number", "null"] },
+              "cxp": { "type": ["number", "null"] },
+              "crx": { "type": ["number", "null"] },
+              "uxp": { "type": ["number", "null"] },
+              "urx": { "type": ["number", "null"] },
+              "sawdown": { "type": ["number", "null"] },
+              "sawup": { "type": ["number", "null"] },
+              "flatwave": { "type": ["number", "null"] }
+            }
+          }
+        }
+      }
+    },
+
+    "machine_interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "serialization_format",
+        "logical_schema",
+        "query_endpoint",
+        "compatibility",
+        "dependency_keys"
+      ],
+      "properties": {
+        "serialization_format": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["yaml", "json", "ttl"] }
+        },
+        "logical_schema": { "type": "string", "minLength": 1 },
+        "query_endpoint": { "type": "string", "pattern": "^/" },
+        "compatibility": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "dependency_keys": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admissibility_summary", "verification"],
+      "properties": {
+        "admissibility_summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "structure_status",
+            "projection_status",
+            "calibration_status",
+            "practice_status",
+            "ethical_status"
+          ],
+          "properties": {
+            "structure_status": { "type": "string", "enum": ["closed"] },
+            "projection_status": { "type": "string", "enum": ["free"] },
+            "calibration_status": { "type": "string", "enum": ["continuous"] },
+            "practice_status": { "type": "string", "enum": ["governed"] },
+            "ethical_status": { "type": "string", "enum": ["transparent"] }
+          }
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "validation_suite",
+            "unit_tests_passed",
+            "residual_variance",
+            "anomalies",
+            "meta_admissibility"
+          ],
+          "properties": {
+            "validation_suite": { "type": "string", "minLength": 1 },
+            "unit_tests_passed": { "type": "integer", "minimum": 0 },
+            "residual_variance": { "type": "number", "minimum": 0 },
+            "anomalies": { "type": "integer", "minimum": 0 },
+            "meta_admissibility": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "sorts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "primitive_symbols": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "sort", "kind"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "sort": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "paper": { "type": "string", "minLength": 1 },
+          "notes": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "formal_axioms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "layer", "name", "formal", "enforcement", "depends_on"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "layer": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "formal": { "type": "string", "minLength": 1 },
+          "enforcement": { "type": "string", "minLength": 1 },
+          "depends_on": { "$ref": "#/$defs/slotList" }
+        }
+      }
+    },
+
+    "admissibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["predicate_name", "criteria", "inadmissible_moves", "two_rotation_seal"],
+      "properties": {
+        "predicate_name": { "type": "string", "minLength": 1 },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "inadmissible_moves": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "two_rotation_seal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rotation_1_degrees", "rotation_2_degrees", "status"],
+          "properties": {
+            "rotation_1_degrees": { "type": "number" },
+            "rotation_2_degrees": { "type": "number" },
+            "status": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+
+    "catalog_unmodeled_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "text"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "text": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent", "interoperability", "revision_policy", "canonical_close"],
+      "properties": {
+        "intent": { "type": "string", "minLength": 1 },
+        "interoperability": { "type": "string", "minLength": 1 },
+        "revision_policy": { "type": "string", "minLength": 1 },
+        "canonical_close": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "projections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/projection" }
+    }
+  },
+
+  "$defs": {
+    "slotKey": {
+      "type": "string",
+      "pattern": "^[A-W]$"
+    },
+    "slotList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slotKey" }
+    },
+
+    "exprNode": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "number" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fn", "args"],
+          "properties": {
+            "fn": { "type": "string", "minLength": 1 },
+            "args": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/exprNode" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "lhs", "rhs"],
+          "properties": {
+            "op": { "type": "string", "minLength": 1 },
+            "lhs": { "$ref": "#/$defs/exprNode" },
+            "rhs": { "$ref": "#/$defs/exprNode" }
+          }
+        }
+      ]
+    },
+
+    "namedExpr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "expr", "display"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "expr": { "$ref": "#/$defs/exprNode" },
+        "display": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "algorithmStep": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["set", "call", "args"],
+          "properties": {
+            "set": { "type": "string", "minLength": 1 },
+            "call": { "type": "string", "minLength": 1 },
+            "args": { "type": "array" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["set", "expr"],
+          "properties": {
+            "set": { "type": "string", "minLength": 1 },
+            "expr": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["if", "then"],
+          "properties": {
+            "if": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["op", "lhs", "rhs"],
+              "properties": {
+                "op": { "type": "string", "enum": [">", ">=", "<", "<=", "==", "!="] },
+                "lhs": { "type": "string", "minLength": 1 },
+                "rhs": { "type": ["string", "number"] }
+              }
+            },
+            "then": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/algorithmThenStep" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["return"],
+          "properties": {
+            "return": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+
+    "algorithmThenStep": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["set", "call", "args"],
+          "properties": {
+            "set": { "type": "string", "minLength": 1 },
+            "call": { "type": "string", "minLength": 1 },
+            "args": { "type": "array" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["set", "expr"],
+          "properties": {
+            "set": { "type": "string", "minLength": 1 },
+            "expr": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["return"],
+          "properties": {
+            "return": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "version",
+        "language",
+        "axiom_refs",
+        "canonical_slots_used",
+        "declared_primitives",
+        "domain",
+        "principles",
+        "definitions",
+        "admissibility_contract",
+        "algorithm"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+
+        "axiom_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+
+        "canonical_slots_used": { "$ref": "#/$defs/slotList" },
+        "declared_primitives": { "$ref": "#/$defs/slotList" },
+
+        "domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phase_symbol", "phase_range", "dimensionless", "inputs"],
+          "properties": {
+            "phase_symbol": { "type": "string", "minLength": 1 },
+            "phase_range": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["type", "start", "end"],
+              "properties": {
+                "type": { "type": "string", "enum": ["half_open_interval"] },
+                "start": { "type": ["string", "number"] },
+                "end": { "type": ["string", "number"] }
+              }
+            },
+            "dimensionless": { "type": "boolean" },
+            "inputs": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["S_in", "C_out"],
+              "properties": {
+                "S_in": { "type": "string", "minLength": 1 },
+                "C_out": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+
+        "principles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "no_preferred_frame",
+            "no_preferred_user",
+            "ontology_allowed",
+            "projection_status",
+            "structure_status",
+            "practice_status",
+            "residual_reporting_required"
+          ],
+          "properties": {
+            "no_preferred_frame": { "type": "boolean" },
+            "no_preferred_user": { "type": "boolean" },
+            "ontology_allowed": { "type": "boolean" },
+            "projection_status": { "type": "string", "minLength": 1 },
+            "structure_status": { "type": "string", "minLength": 1 },
+            "practice_status": { "type": "string", "minLength": 1 },
+            "residual_reporting_required": { "type": "boolean" }
+          }
+        },
+
+        "canon_math_ref": { "type": "string" },
+
+        "definitions": {
+          "type": "object",
+          "additionalProperties": true
+        },
+
+        "admissibility_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fivefold_predicate", "requirements"],
+          "properties": {
+            "fivefold_predicate": {
+              "type": "array",
+              "minItems": 5,
+              "maxItems": 5,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "boundedness",
+                  "no_new_primitives",
+                  "mirror_accessibility",
+                  "residual_reporting",
+                  "projection_declaration"
+                ]
+              }
+            },
+            "requirements": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+
+        "algorithm": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["inputs", "steps", "invariances"],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "steps": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/algorithmStep" }
+            },
+            "invariances": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+
+        "outputs": { "type": "object" },
+        "safety_notes": { "type": "object" }
+      }
+    }
+  }
+}
+
+
