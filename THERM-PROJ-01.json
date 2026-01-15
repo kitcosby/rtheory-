@@ -1,0 +1,86 @@
+{
+  "id": "THERM-PROJ-01",
+  "title": "Thermal Equilibrium and Entropy Ratios",
+  "version": "1.0.0",
+  "language": "en",
+  "axiom_refs": ["AXM-THERM-01", "AXM-MATH-03"],
+  "canonical_slots_used": ["Q", "R", "S"],
+  "declared_primitives": ["D", "E", "F"],
+  "domain": {
+    "phase_symbol": "φ_T",
+    "phase_range": {
+      "type": "half_open_interval",
+      "start": 0,
+      "end": 360
+    },
+    "dimensionless": true,
+    "inputs": {
+      "S_in": "state_vector[E_ratio, T_ratio, Ω_ratio]",
+      "C_out": "S_ratio"
+    }
+  },
+  "principles": {
+    "no_preferred_frame": true,
+    "no_preferred_user": true,
+    "ontology_allowed": false,
+    "projection_status": "free",
+    "structure_status": "closed",
+    "practice_status": "governed",
+    "residual_reporting_required": true
+  },
+  "canon_math_ref": "SI-DIMLESS-01",
+  "definitions": {
+    "temperature_ratio": "T_ratio := T / T_ref",
+    "energy_ratio": "E_ratio := E / E_ref",
+    "entropy_ratio": "S_ratio := ln(Ω / Ω_ref)",
+    "boltzmann_relation": "E_ratio = k_B_ratio * T_ratio * S_ratio",
+    "partition_function_ratio": "Z_ratio := Σ exp(-E_ratio / (k_B_ratio * T_ratio)) / Z_ref"
+  },
+  "admissibility_contract": {
+    "fivefold_predicate": [
+      "boundedness",
+      "no_new_primitives",
+      "mirror_accessibility",
+      "residual_reporting",
+      "projection_declaration"
+    ],
+    "requirements": [
+      "All thermodynamic quantities expressed as dimensionless ratios using SI-DIMLESS-01 anchors (k_B, h, etc.).",
+      "No ontological claim of 'heat' or 'energy' as substances.",
+      "Entropy defined purely as ratio of state-counts (Ω / Ω_ref).",
+      "Temperature must appear only as ratio T/T_ref with declared anchor."
+    ]
+  },
+  "algorithm": {
+    "inputs": ["E_ratio", "T_ratio", "Ω_ratio"],
+    "steps": [
+      { "set": "S_ratio", "expr": "ln(Ω_ratio)" },
+      { "set": "E_calc_ratio", "expr": "k_B_ratio * T_ratio * S_ratio" },
+      {
+        "if": { "op": ">", "lhs": "abs(E_calc_ratio - E_ratio)", "rhs": 1e-6 },
+        "then": [{ "set": "residual_flag_energy_consistency", "expr": "true" }]
+      },
+      { "set": "Z_ratio", "expr": "Σ exp(-E_ratio / (k_B_ratio * T_ratio)) / Z_ref" },
+      {
+        "if": { "op": "<=", "lhs": "Z_ratio", "rhs": 0 },
+        "then": [{ "set": "boundedness_violation", "expr": "true" }]
+      },
+      { "return": ["S_ratio", "Z_ratio", "residual_flag_energy_consistency", "boundedness_violation"] }
+    ],
+    "invariances": [
+      "Equilibrium invariance under uniform T_ratio scaling",
+      "Reversible mapping symmetry (S ↔ E via k_B_ratio)",
+      "Additivity under independent subsystem composition"
+    ]
+  },
+  "outputs": {
+    "S_ratio": "number",
+    "Z_ratio": "number",
+    "residual_flag_energy_consistency": "boolean",
+    "boundedness_violation": "boolean"
+  },
+  "safety_notes": {
+    "boundedness_violation": "If partition function ratio ≤ 0, halt projection and log anomaly.",
+    "ethical_comment": "Projection cannot be used for real-world thermodynamic manipulation or speculative perpetual motion modeling."
+  }
+}
