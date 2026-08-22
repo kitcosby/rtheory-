@@ -1,0 +1,138 @@
+{
+  "frontier_results": [
+    {
+      "gate": "QL",
+      "status": "PASS",
+      "statement": "Quasi-linear transported carrier retains the exact rank-one P/K line, the quarter-shift D8 recurrence, and the certified full-E8 spectrum ledger.",
+      "residuals": {
+        "P_idempotency": 0.0,
+        "Khat_det": 0.0,
+        "Khat_minus_P_over_S": 0.0,
+        "D8_quarter_shift": 0.0,
+        "kernel_residual": 0.0,
+        "spectrum_multiplicity_sum": 248,
+        "spectrum_trace": 248.0
+      },
+      "witnesses": [],
+      "details": {}
+    },
+    {
+      "gate": "D8",
+      "status": "PASS",
+      "statement": "Each mixed D8 pair carries the same rapidity transport as P/K, shifted by one quarter; these are the reciprocal pairs whose opposite grades source the D curvature.",
+      "residuals": {
+        "quarter_shift": 0.0,
+        "eigenvalue_residual": 1.1102230246251565e-16
+      },
+      "witnesses": [],
+      "details": {}
+    },
+    {
+      "gate": "CS0",
+      "status": "PASS",
+      "statement": "Pure Lorentz/D algebraic wedge terms annihilate the symmetric co-soldering subspace; they cannot by themselves give a Hessian to f_(mu nu).",
+      "residuals": {
+        "symmetric_dimension": 10,
+        "antisymmetric_dimension": 6,
+        "A_on_Sym_residual": 0.0
+      },
+      "witnesses": [],
+      "details": {}
+    },
+    {
+      "gate": "A0",
+      "status": "OPEN",
+      "statement": "The pair (T_w,D) has the desired residual Spin(10)xSpin(3,1) stabilizer at representation level, but the action has not yet selected/activated the orbit.",
+      "residuals": {},
+      "witnesses": [
+        "LACKS-DYNAMICAL-LORENTZ-ORBIT-SELECTION"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A1-RAD",
+      "status": "OPEN",
+      "statement": "The representation-admissible PhiBB invariant exists, but its microscopic coupling is not derived.",
+      "residuals": {},
+      "witnesses": [
+        "MISSING-g_PhiBB"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A2-MK",
+      "status": "OPEN",
+      "statement": "Full-adjoint BF/BB matrices have not yet been exported for the matched-kernel test.",
+      "residuals": {},
+      "witnesses": [
+        "MISSING-FULL-MATCHED-KERNEL-MATRICES"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "CS1",
+      "status": "OPEN",
+      "statement": "Full D8/BRST constraint Jacobian on f_(mu nu) has not been supplied.",
+      "residuals": {
+        "symmetric_dimension": 10
+      },
+      "witnesses": [
+        "MISSING-COSOLDERING-CONSTRAINT-JACOBIAN"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A2-SYM-BRST",
+      "status": "OPEN",
+      "statement": "No linearized BRST/constraint complex on the ten symmetric co-soldering components has been exported.",
+      "residuals": {},
+      "witnesses": [
+        "MISSING-SYMMETRIC-BRST-COMPLEX"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A3",
+      "status": "OPEN",
+      "statement": "No independently varied candidate coframe matrix has been supplied.",
+      "residuals": {},
+      "witnesses": [
+        "MISSING-COFRAME-CANDIDATE"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A4",
+      "status": "OPEN",
+      "statement": "Neutral principal-symbol uniqueness is already certified by T_w. Action-level one-spin-2 closure additionally requires the symmetric co-soldering constraint/BRST test to leave no independent f_(mu nu) mode.",
+      "residuals": {
+        "symmetric_dimension": 10
+      },
+      "witnesses": [
+        "MISSING-COSOLDERING-CONSTRAINT-JACOBIAN"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A5",
+      "status": "OPEN",
+      "statement": "Full constrained quadratic Hessian and/or constraint map has not been supplied.",
+      "residuals": {},
+      "witnesses": [
+        "MISSING-CONSTRAINED-HESSIAN-DATA"
+      ],
+      "details": {}
+    },
+    {
+      "gate": "A6",
+      "status": "OPEN",
+      "statement": "Absolute mirror selection and physical cosmology remain downstream of A0-A5.",
+      "residuals": {},
+      "witnesses": [
+        "DOWNSTREAM-FIREWALL"
+      ],
+      "details": {}
+    }
+  ],
+  "all_passed": false
+}
